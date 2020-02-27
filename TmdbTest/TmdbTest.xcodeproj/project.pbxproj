@@ -59,6 +59,9 @@
 		78E38B7324088481001A2BD3 = {
 			isa = PBXGroup;
 			children = (
+				78E38B9C24088A44001A2BD3 /* Models */,
+				78E38B9B24088A21001A2BD3 /* Data */,
+				78E38B9A24088A02001A2BD3 /* ViewControllers */,
 				78E38B7E24088481001A2BD3 /* TmdbTest */,
 				78E38B7D24088481001A2BD3 /* Products */,
 				8D329C85671BC0F4EAF9CF02 /* Pods */,
@@ -80,15 +83,36 @@
 				78E38B9824088707001A2BD3 /* Podfile */,
 				78E38B7F24088481001A2BD3 /* AppDelegate.swift */,
 				78E38B8124088481001A2BD3 /* SceneDelegate.swift */,
-				78E38B8324088481001A2BD3 /* FirstViewController.swift */,
-				78E38B8524088481001A2BD3 /* SecondViewController.swift */,
 				78E38B9224088482001A2BD3 /* Info.plist */,
 				78E38B8724088481001A2BD3 /* Main.storyboard */,
 				78E38B8D24088482001A2BD3 /* Assets.xcassets */,
 				78E38B8F24088482001A2BD3 /* LaunchScreen.storyboard */,
-				78E38B8A24088481001A2BD3 /* TmdbTest.xcdatamodeld */,
 			);
 			path = TmdbTest;
+			sourceTree = "<group>";
+		};
+		78E38B9A24088A02001A2BD3 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				78E38B8324088481001A2BD3 /* FirstViewController.swift */,
+				78E38B8524088481001A2BD3 /* SecondViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		78E38B9B24088A21001A2BD3 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				78E38B8A24088481001A2BD3 /* TmdbTest.xcdatamodeld */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		78E38B9C24088A44001A2BD3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		8D329C85671BC0F4EAF9CF02 /* Pods */ = {
