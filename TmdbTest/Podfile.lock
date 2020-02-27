@@ -1,0 +1,33 @@
+PODS:
+  - Alamofire (4.9.1)
+  - AlamofireObjectMapper (5.1.0):
+    - Alamofire (~> 4.1)
+    - ObjectMapper (~> 3.3)
+  - ObjectMapper (3.5.1)
+  - SideMenu (6.4.7)
+  - TMDBSwift (0.5.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.1)
+  - AlamofireObjectMapper (~> 5.1.0)
+  - SideMenu (~> 6.4.7)
+  - TMDBSwift (~> 0.5.1)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - AlamofireObjectMapper
+    - ObjectMapper
+    - SideMenu
+    - TMDBSwift
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  AlamofireObjectMapper: 3395e698901d8b0e6f48b7d0c43bd47875325102
+  ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
+  SideMenu: 928a015669c3afc201e1fe3a87f1b0bc8993a664
+  TMDBSwift: 9220f3dcee23372c05b92f8c111f5f4c37185aee
+
+PODFILE CHECKSUM: 7f3d97a26117ba46c1d6439d127bff327e4212a6
+
+COCOAPODS: 1.9.0
