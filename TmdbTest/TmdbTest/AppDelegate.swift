@@ -8,11 +8,12 @@
 
 import UIKit
 import CoreData
+import TMDBSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    let apiKey = "c82a2ecc048f6be2dd8a873143be57aa"
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
