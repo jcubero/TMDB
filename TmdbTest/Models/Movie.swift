@@ -13,21 +13,23 @@ import AlamofireObjectMapper
 class Movie: Mappable {
     // MARK: Properties
     
-    var id: String?
+    var id: Int?
     var title: String?
-    var poster_path: String?
-    var overview: String?
-    var vote_average: String?
+    var posterURL: String?
+    var sinopsis: String?
+    var rating: Double?
+    var releaseDate: String?
     required init?(map: Map) {
         
     }
     
     func mapping(map: Map) {
         id <- map["id"]
-        title <- map["Title"]
-        vote_average <- map["vote_average"]
-        poster_path <- map["poster_path"]
-        overview <- map["overview"]
+        title <- map["title"]
+        rating <- map["vote_average"]
+        posterURL <- map["poster_path"]
+        sinopsis <- map["overview"]
+        releaseDate <- map["release_date"]
     }
 }
 

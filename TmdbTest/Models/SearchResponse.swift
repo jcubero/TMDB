@@ -13,18 +13,11 @@ import AlamofireObjectMapper
 class SearchResponse: Mappable {
     
     var results: [Movie]?
-    var count: String?
-    var page: String?
     
     required init?(map: Map) {
-           
-    
     }
-       
     
     func mapping(map: Map) {
         results <- map["results"]
-        count <- map["total_results"]
-        page <- map["page"]
     }
 }
