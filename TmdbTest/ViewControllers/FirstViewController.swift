@@ -12,7 +12,7 @@ import AlamofireObjectMapper
 import ObjectMapper
 import CoreData
 
-class FirstViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class FirstViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     var movies = [Movie]()
     
     @IBOutlet weak var table: UITableView!
@@ -141,7 +141,7 @@ extension FirstViewController {
             let searchResponse = value
             if(searchResponse.results != nil) {
                 self.movies = (searchResponse.results)!.sorted {
-                    $0.title! < $1.title!
+                    $1.rating! < $0.rating!
                 }
             }
             else {

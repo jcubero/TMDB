@@ -54,7 +54,7 @@ class SecondViewController: BaseViewController, UITableViewDelegate,UITableViewD
         do {
             let result = try context.fetch(request)
             movieData = (result as! [MovieData]).sorted {
-                $0.title! < $1.title!
+                $1.rating < $0.rating
             }
         } catch {
             print("Failed")
