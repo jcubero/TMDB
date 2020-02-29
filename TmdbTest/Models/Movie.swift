@@ -22,7 +22,9 @@ class Movie: Mappable {
     required init?(map: Map) {
         
     }
-    
+    init?() {
+        
+    }
     func mapping(map: Map) {
         id <- map["id"]
         title <- map["title"]

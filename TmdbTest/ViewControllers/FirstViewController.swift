@@ -16,8 +16,11 @@ class FirstViewController: BaseViewController, UITableViewDataSource, UITableVie
     var movies = [Movie]()
     
     @IBOutlet weak var name: UISearchBar!
-    
     @IBOutlet weak var table: UITableView!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        fetchMovies()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +29,7 @@ class FirstViewController: BaseViewController, UITableViewDataSource, UITableVie
         //register table view cell
         table.register(UINib.init(nibName: "TMDBCustomCell", bundle: nil), forCellReuseIdentifier: "TMDBCustomCell")
         name.delegate = self
-        fetchMovies()
+        
     }
     
     @objc func buttonAction(sender: UIButton!) {
@@ -79,6 +82,9 @@ class FirstViewController: BaseViewController, UITableViewDataSource, UITableVie
             }
       } catch {
             print("Failed")
+        }
+        cell.callback = { () -> Void in
+            
         }
         return cell
     }

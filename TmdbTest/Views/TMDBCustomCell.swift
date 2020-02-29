@@ -14,20 +14,20 @@ class TMDBCustomCell: UITableViewCell {
     @IBOutlet weak var posterImage: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var title: UILabel!
+    var callback: (() -> Void)?
     var isLiked = false
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var movie: Movie!
     
     @IBAction func AddFavorite(_ sender: UIButton, forEvent event: UIEvent) {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MovieData")
-        request.predicate = NSPredicate(format: "id = %@", movie.id!)
+        request.predicate = NSPredicate(format: "id = %d", movie.id!)
         let context = appDelegate.persistentContainer.viewContext
         var isAdded = false
         request.returnsObjectsAsFaults = false
         do {
             let result = try context.fetch(request)
             for data in result as! [NSManagedObject] {
-                //print(data.value(forKey: "username") as! String)
                 isAdded = true;
                 if !isLiked{
                     likeButton.setImage(UIImage(named:"Like"), for: UIControl.State.normal)
@@ -68,6 +68,10 @@ class TMDBCustomCell: UITableViewCell {
             }
         } catch {
             print("Failed")
+        }
+        
+        if callback != nil {
+            callback!()
         }
     }
     

@@ -18,7 +18,7 @@ class MovieDetailViewController: UIViewController {
 
     @IBOutlet weak var poster: UIImageView!
 
-    @IBOutlet weak var imdbRating: UILabel!
+    @IBOutlet weak var rating: UILabel!
 
     @IBOutlet weak var sinopsis: UITextView!
     public var movie: Movie!
