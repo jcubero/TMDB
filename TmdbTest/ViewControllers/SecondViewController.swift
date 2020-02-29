@@ -2,7 +2,7 @@
 //  SecondViewController.swift
 //  TmdbTest
 //
-//  Created by Joaquin Cubero on 2/27/20.
+//  Created by Joaquin Cubero on 2/28/20.
 //  Copyright © 2020 Joaquin Cubero. All rights reserved.
 //
 
@@ -23,6 +23,28 @@ class SecondViewController: BaseViewController, UITableViewDelegate,UITableViewD
         super.viewWillAppear(animated)
         self.reloadData()
     }
+    @IBAction func PerformSort(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            movieData = movieData.sorted {
+                $0.title! < $1.title!
+            }
+            break
+        case 1:
+            movieData = movieData.sorted {
+                $1.year! < $0.year!
+            }
+            break
+        case 2:
+            movieData = movieData.sorted {
+                $1.rating < $0.rating
+            }
+            break
+        default:
+            break
+        }
+        table.reloadData()
+    }
     
     func reloadData() {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MovieData")
@@ -31,7 +53,9 @@ class SecondViewController: BaseViewController, UITableViewDelegate,UITableViewD
         request.returnsObjectsAsFaults = false
         do {
             let result = try context.fetch(request)
-            movieData = result as! [MovieData]
+            movieData = (result as! [MovieData]).sorted {
+                $0.title! < $1.title!
+            }
         } catch {
             print("Failed")
         }
@@ -100,7 +124,6 @@ class SecondViewController: BaseViewController, UITableViewDelegate,UITableViewD
         vc.movie.posterURL = data.posterUrl
         vc.movie.sinopsis = data.sinopsis
         vc.movie.rating = data.rating
-        
     }
 }
 

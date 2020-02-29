@@ -2,7 +2,7 @@
 //  FirstViewController.swift
 //  TmdbTest
 //
-//  Created by Joaquin Cubero on 2/27/20.
+//  Created by Joaquin Cubero on 2/28/20.
 //  Copyright © 2020 Joaquin Cubero. All rights reserved.
 //
 
@@ -16,6 +16,28 @@ class FirstViewController: BaseViewController, UITableViewDataSource, UITableVie
     var movies = [Movie]()
     
     @IBOutlet weak var table: UITableView!
+    @IBAction func PerformSort(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            movies = movies.sorted {
+                $0.title! < $1.title!
+            }
+            break
+        case 1:
+            movies = movies.sorted {
+                $1.releaseDate! < $0.releaseDate!
+            }
+            break
+        case 2:
+            movies = movies.sorted {
+                $1.rating! < $0.rating!
+            }
+            break
+        default:
+            break
+        }
+        table.reloadData()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         fetchMovies()
@@ -118,7 +140,9 @@ extension FirstViewController {
         case .success(let value):
             let searchResponse = value
             if(searchResponse.results != nil) {
-                self.movies = (searchResponse.results)!
+                self.movies = (searchResponse.results)!.sorted {
+                    $0.title! < $1.title!
+                }
             }
             else {
                 self.movies = [Movie]()
