@@ -43,10 +43,12 @@ class MovieDetailViewController: BaseViewController {
         request.predicate = NSPredicate(format: "id = %d", movie.id!)
         let context = appDelegate.persistentContainer.viewContext
         request.returnsObjectsAsFaults = false
+        var isAdded = false
         do {
             let result = try context.fetch(request)
             for data in result as! [MovieData] {
-                if data.isLiked{
+                isAdded = true
+                if data.isLiked {
                     likeButton.setImage(UIImage(named:"Like"), for: UIControl.State.normal)
                     isLiked = true
                 }
@@ -55,6 +57,11 @@ class MovieDetailViewController: BaseViewController {
                     isLiked = false
                 }
                 break
+            }
+            
+            if !isAdded {
+                likeButton.setImage(UIImage(named:"UnLike"), for: UIControl.State.normal)
+                isLiked = false
             }
         } catch {
             print("Failed")
