@@ -6,25 +6,23 @@
 //  Copyright © 2020 Joaquin Cubero. All rights reserved.
 //
 
-import UIKit
-import ObjectMapper
 import AlamofireObjectMapper
+import ObjectMapper
+import UIKit
 
 class Movie: Mappable {
     // MARK: Properties
-    
+
     var id: Int?
     var title: String?
     var posterURL: String?
     var sinopsis: String?
     var rating: Double?
     var releaseDate: String?
-    required init?(map: Map) {
-        
-    }
-    init?() {
-        
-    }
+    required init?(map _: Map) {}
+
+    init?() {}
+
     func mapping(map: Map) {
         id <- map["id"]
         title <- map["title"]
@@ -34,5 +32,3 @@ class Movie: Mappable {
         releaseDate <- map["release_date"]
     }
 }
-
-

@@ -6,12 +6,11 @@
 //  Copyright © 2020 Joaquin Cubero. All rights reserved.
 //
 
-import UIKit
 import Alamofire
 import AlamofireObjectMapper
-import ObjectMapper
 import CoreData
-import SideMenu
+import ObjectMapper
+import UIKit
 
 class BaseViewController: UIViewController {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -22,20 +21,21 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+
     func SaverForLater(movieId: Int) {
-      let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MovieData")
-      request.predicate = NSPredicate(format: "id = %d", movieId)
-      let context = appDelegate.persistentContainer.viewContext
-      var isAdded = false
-      request.returnsObjectsAsFaults = false
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MovieData")
+        request.predicate = NSPredicate(format: "id = %d", movieId)
+        let context = appDelegate.persistentContainer.viewContext
+        var isAdded = false
+        request.returnsObjectsAsFaults = false
         do {
             let result = try context.fetch(request)
             for data in result as! [NSManagedObject] {
                 data.setValue(true, forKey: "IsLater")
-                isAdded = true;
+                isAdded = true
                 break
             }
-            if !isAdded{
+            if !isAdded {
                 let entity = NSEntityDescription.entity(forEntityName: "MovieData", in: context)
                 let newMovie = NSManagedObject(entity: entity!, insertInto: context)
                 newMovie.setValue(movieId, forKey: "id")
@@ -43,7 +43,7 @@ class BaseViewController: UIViewController {
                 do {
                     try context.save()
                 } catch {
-                   print("Failed saving")
+                    print("Failed saving")
                 }
             }
         } catch {
@@ -51,17 +51,17 @@ class BaseViewController: UIViewController {
         }
     }
 
-    func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
+    func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _ response: URLResponse?, _ error: Error?) -> Void) {
         URLSession.shared.dataTask(with: url) {
-            (data, response, error) in
+            data, response, error in
             completion(data, response, error)
-            }.resume()
+        }.resume()
     }
-    
+
     func downloadImage(url: URL, imageView: UIImageView) {
         print("Download Started")
-        getDataFromUrl(url: url) { (data, response, error)  in
-            DispatchQueue.main.sync() { () -> Void in
+        getDataFromUrl(url: url) { data, response, error in
+            DispatchQueue.main.sync { () -> Void in
                 guard let data = data, error == nil else { return }
                 print(response?.suggestedFilename ?? url.lastPathComponent)
                 print("Download Finished")
@@ -69,9 +69,8 @@ class BaseViewController: UIViewController {
             }
         }
     }
-    
-    func GetOnlyDateMonthYearFromFullDate(currentDateFormate:String , conVertFormate:String , convertDate:String ) -> String
-    {
+
+    func GetOnlyDateMonthYearFromFullDate(currentDateFormate: String, conVertFormate: String, convertDate: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = currentDateFormate as String
         let formatter = DateFormatter()
@@ -84,13 +83,12 @@ class BaseViewController: UIViewController {
     }
 
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         // Get the new view controller using segue.destination.
+         // Pass the selected object to the new view controller.
+     }
+     */
 }

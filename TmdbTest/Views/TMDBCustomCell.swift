@@ -6,22 +6,21 @@
 //  Copyright © 2020 Joaquin Cubero. All rights reserved.
 //
 
-import UIKit
 import CoreData
+import UIKit
 
 class TMDBCustomCell: UITableViewCell {
-
-    @IBOutlet weak var rating: UILabel!
-    @IBOutlet weak var year: UILabel!
-    @IBOutlet weak var posterImage: UIImageView!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var title: UILabel!
+    @IBOutlet var rating: UILabel!
+    @IBOutlet var year: UILabel!
+    @IBOutlet var posterImage: UIImageView!
+    @IBOutlet var likeButton: UIButton!
+    @IBOutlet var title: UILabel!
     var callback: (() -> Void)?
     var isLiked = false
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var movie: Movie!
-    
-    @IBAction func AddFavorite(_ sender: UIButton, forEvent event: UIEvent) {
+
+    @IBAction func AddFavorite(_: UIButton, forEvent _: UIEvent) {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MovieData")
         request.predicate = NSPredicate(format: "id = %d", movie.id!)
         let context = appDelegate.persistentContainer.viewContext
@@ -30,27 +29,25 @@ class TMDBCustomCell: UITableViewCell {
         do {
             let result = try context.fetch(request)
             for data in result as! [NSManagedObject] {
-                isAdded = true;
-                if !isLiked{
-                    likeButton.setImage(UIImage(named:"Like"), for: UIControl.State.normal)
+                isAdded = true
+                if !isLiked {
+                    likeButton.setImage(UIImage(named: "Like"), for: UIControl.State.normal)
                     data.setValue(true, forKey: "isLiked")
                     isLiked = true
-                }
-                else {
+                } else {
                     data.setValue(false, forKey: "isLiked")
-                    likeButton.setImage(UIImage(named:"UnLike"), for: UIControl.State.normal)
+                    likeButton.setImage(UIImage(named: "UnLike"), for: UIControl.State.normal)
                     isLiked = false
                 }
                 break
             }
-            
+
             if !isAdded {
-                if !isLiked{
-                    likeButton.setImage(UIImage(named:"Like"), for: UIControl.State.normal)
+                if !isLiked {
+                    likeButton.setImage(UIImage(named: "Like"), for: UIControl.State.normal)
                     isLiked = true
-                }
-                else {
-                    likeButton.setImage(UIImage(named:"UnLike"), for: UIControl.State.normal)
+                } else {
+                    likeButton.setImage(UIImage(named: "UnLike"), for: UIControl.State.normal)
                     isLiked = false
                 }
                 let entity = NSEntityDescription.entity(forEntityName: "MovieData", in: context)
@@ -66,17 +63,17 @@ class TMDBCustomCell: UITableViewCell {
             do {
                 try context.save()
             } catch {
-               print("Failed saving")
+                print("Failed saving")
             }
         } catch {
             print("Failed")
         }
-        
+
         if callback != nil {
             callback!()
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -85,5 +82,4 @@ class TMDBCustomCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
 }

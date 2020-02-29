@@ -6,17 +6,15 @@
 //  Copyright © 2020 Joaquin Cubero. All rights reserved.
 //
 
-import UIKit
-import ObjectMapper
 import AlamofireObjectMapper
+import ObjectMapper
+import UIKit
 
 class SearchResponse: Mappable {
-    
     var results: [Movie]?
-    
-    required init?(map: Map) {
-    }
-    
+
+    required init?(map _: Map) {}
+
     func mapping(map: Map) {
         results <- map["results"]
     }

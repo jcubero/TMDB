@@ -6,20 +6,19 @@
 //  Copyright © 2020 Joaquin Cubero. All rights reserved.
 //
 
-import UIKit
 import Alamofire
 import AlamofireObjectMapper
-import ObjectMapper
 import CoreData
+import ObjectMapper
+import UIKit
 
 class MovieDetailViewController: BaseViewController {
-
-    @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var poster: UIImageView!
-    @IBOutlet weak var rating: UILabel!
-    @IBOutlet weak var sinopsis: UITextView!
-    @IBOutlet weak var year: UILabel!
-    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet var name: UILabel!
+    @IBOutlet var poster: UIImageView!
+    @IBOutlet var rating: UILabel!
+    @IBOutlet var sinopsis: UITextView!
+    @IBOutlet var year: UILabel!
+    @IBOutlet var likeButton: UIButton!
     let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MovieData")
     var isLiked = false
     public var movie: Movie!
@@ -27,18 +26,18 @@ class MovieDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let imageURL = "https://image.tmdb.org/t/p/w200" + movie.posterURL!
-        self.name.text = self.movie.title
+        name.text = movie.title
         if let url = URL(string: imageURL) {
-            self.poster.contentMode = .scaleAspectFill
-            self.downloadImage(url: url, imageView: self.poster)
+            poster.contentMode = .scaleAspectFill
+            downloadImage(url: url, imageView: poster)
         }
-        self.sinopsis.text = self.movie.sinopsis!
-        self.rating.text = String(format:"%.1f", movie.rating ?? "NA")
-        self.name.text = self.movie.title!
-        self.year.text = self.GetOnlyDateMonthYearFromFullDate(currentDateFormate: "yyyy-MM-dd", conVertFormate: "YYYY", convertDate: movie.releaseDate!) as String
+        sinopsis.text = movie.sinopsis!
+        rating.text = String(format: "%.1f", movie.rating ?? "NA")
+        name.text = movie.title!
+        year.text = GetOnlyDateMonthYearFromFullDate(currentDateFormate: "yyyy-MM-dd", conVertFormate: "YYYY", convertDate: movie.releaseDate!) as String
         checkInitialState()
     }
-    
+
     func checkInitialState() {
         request.predicate = NSPredicate(format: "id = %d", movie.id!)
         let context = appDelegate.persistentContainer.viewContext
@@ -49,26 +48,25 @@ class MovieDetailViewController: BaseViewController {
             for data in result as! [MovieData] {
                 isAdded = true
                 if data.isLiked {
-                    likeButton.setImage(UIImage(named:"Like"), for: UIControl.State.normal)
+                    likeButton.setImage(UIImage(named: "Like"), for: UIControl.State.normal)
                     isLiked = true
-                }
-                else {
-                    likeButton.setImage(UIImage(named:"UnLike"), for: UIControl.State.normal)
+                } else {
+                    likeButton.setImage(UIImage(named: "UnLike"), for: UIControl.State.normal)
                     isLiked = false
                 }
                 break
             }
-            
+
             if !isAdded {
-                likeButton.setImage(UIImage(named:"UnLike"), for: UIControl.State.normal)
+                likeButton.setImage(UIImage(named: "UnLike"), for: UIControl.State.normal)
                 isLiked = false
             }
         } catch {
             print("Failed")
         }
     }
-    
-    @IBAction func PerformLike(_ sender: Any) {
+
+    @IBAction func PerformLike(_: Any) {
         request.predicate = NSPredicate(format: "id = %d", movie.id!)
         let context = appDelegate.persistentContainer.viewContext
         var isAdded = false
@@ -76,27 +74,25 @@ class MovieDetailViewController: BaseViewController {
         do {
             let result = try context.fetch(request)
             for data in result as! [MovieData] {
-                isAdded = true;
-                if !isLiked{
-                    likeButton.setImage(UIImage(named:"Like"), for: UIControl.State.normal)
+                isAdded = true
+                if !isLiked {
+                    likeButton.setImage(UIImage(named: "Like"), for: UIControl.State.normal)
                     data.setValue(true, forKey: "isLiked")
                     isLiked = true
-                }
-                else {
+                } else {
                     data.setValue(false, forKey: "isLiked")
-                    likeButton.setImage(UIImage(named:"UnLike"), for: UIControl.State.normal)
+                    likeButton.setImage(UIImage(named: "UnLike"), for: UIControl.State.normal)
                     isLiked = false
                 }
                 break
             }
-            
+
             if !isAdded {
-                if !isLiked{
-                    likeButton.setImage(UIImage(named:"Like"), for: UIControl.State.normal)
+                if !isLiked {
+                    likeButton.setImage(UIImage(named: "Like"), for: UIControl.State.normal)
                     isLiked = true
-                }
-                else {
-                    likeButton.setImage(UIImage(named:"UnLike"), for: UIControl.State.normal)
+                } else {
+                    likeButton.setImage(UIImage(named: "UnLike"), for: UIControl.State.normal)
                     isLiked = false
                 }
                 let entity = NSEntityDescription.entity(forEntityName: "MovieData", in: context)
@@ -112,7 +108,7 @@ class MovieDetailViewController: BaseViewController {
             do {
                 try context.save()
             } catch {
-               print("Failed saving")
+                print("Failed saving")
             }
         } catch {
             print("Failed")
