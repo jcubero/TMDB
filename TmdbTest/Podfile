@@ -8,7 +8,5 @@ target 'TmdbTest' do
   # Pods for TmdbTest
   pod 'Alamofire', '~> 5.0.0-beta.6'
   pod 'AlamofireObjectMapper', '~> 6.1.0'
-  pod 'SideMenu', '~> 6.4.7'
   pod "TMDBSwift", '~> 0.5.1'
-
 end

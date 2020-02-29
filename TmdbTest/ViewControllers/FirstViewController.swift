@@ -15,7 +15,6 @@ import CoreData
 class FirstViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     var movies = [Movie]()
     
-    @IBOutlet weak var name: UISearchBar!
     @IBOutlet weak var table: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -28,7 +27,6 @@ class FirstViewController: BaseViewController, UITableViewDataSource, UITableVie
         table.dataSource = self
         //register table view cell
         table.register(UINib.init(nibName: "TMDBCustomCell", bundle: nil), forCellReuseIdentifier: "TMDBCustomCell")
-        name.delegate = self
         
     }
     
@@ -60,6 +58,8 @@ class FirstViewController: BaseViewController, UITableViewDataSource, UITableVie
         let movie = movies[indexPath.row]
         cell.movie = movie
         cell.title?.text = movie.title
+        cell.year.text = self.GetOnlyDateMonthYearFromFullDate(currentDateFormate: "yyyy-MM-dd", conVertFormate: "YYYY", convertDate: movie.releaseDate!) as String
+        cell.rating.text = String(format:"%.1f", movie.rating ?? "NA")
         let imageURL = "https://image.tmdb.org/t/p/w200" + movie.posterURL!
         if let url = URL(string: imageURL) {
             cell.posterImage.contentMode = .scaleAspectFill
@@ -73,10 +73,12 @@ class FirstViewController: BaseViewController, UITableViewDataSource, UITableVie
             let result = try context.fetch(request)
             for data in result as! [MovieData] {
                 if data.isLiked == true{
+                    cell.isLiked = true
                     cell.likeButton.setImage(UIImage(named:"Like"), for: UIControl.State.normal)
                 }
                 else
                 {
+                    cell.isLiked = false
                     cell.likeButton.setImage(UIImage(named:"UnLike"), for: UIControl.State.normal)
                 }
             }
@@ -91,73 +93,18 @@ class FirstViewController: BaseViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 240
     }
-    
-    func tableView(
-      _ tableView: UITableView,
-      contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint)
-      -> UIContextMenuConfiguration? {
-
-        let index = indexPath.row
-        let movie = movies[indexPath.row]
-        let identifier = "\(index)" as NSString
-        
-        return UIContextMenuConfiguration(
-        identifier: identifier, previewProvider: nil) { _ in
-            let action = UIAction(title: "Add To Watch List",
-                                   image: nil) { _ in
-                                    self.SaverForLater(movieId: movie.id!)
-            }
-            return UIMenu(title: "", image: nil,
-                        children: [action])
-        }
-    }
-        
-    
-    func tableView(_ tableView: UITableView,
-                            previewForHighlightingContextMenuWithConfiguration
-      configuration: UIContextMenuConfiguration)
-      -> UITargetedPreview? {
-        guard
-          // 1
-          let identifier = configuration.identifier as? String,
-          let index = Int(identifier),
-          // 2
-          let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0))
-            as? TMDBCustomCell
-          else {
-            return nil
-        }
-        
-        // 3
-        return UITargetedPreview(view: cell.posterImage)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = MovieDetailViewController()
+        performSegue(withIdentifier: "FirstSegue", sender: vc)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(
-      _ tableView: UITableView, willPerformPreviewActionForMenuWith
-      configuration: UIContextMenuConfiguration,
-      animator: UIContextMenuInteractionCommitAnimating) {
-      // 1
-      guard
-        let identifier = configuration.identifier as? String,
-        let index = Int(identifier)
-        else {
-          return
-      }
-      let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0))
-      
-      animator.addCompletion {
-        self.performSegue(withIdentifier: "showSpotInfoViewController",
-                          sender: cell)
-      }
-    }
     override func prepare(for segue: UIStoryboardSegue,
                  sender: Any?)
     {
-        if segue.identifier == "movie_detail"{
-            let vc = segue.destination as! MovieDetailViewController
-            let movieIndex = table.indexPathForSelectedRow?.row
-            vc.movie = movies[movieIndex!]
-        }
+        let vc = segue.destination as! MovieDetailViewController
+        let movieIndex = table.indexPathForSelectedRow?.row
+        vc.movie = movies[movieIndex!]
     }
 }
 

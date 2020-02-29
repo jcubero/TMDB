@@ -8,12 +8,10 @@
 
 import UIKit
 import CoreData
-class SecondViewController: UIViewController, UITableViewDelegate,UITableViewDataSource {
+class SecondViewController: BaseViewController, UITableViewDelegate,UITableViewDataSource {
     public var movieData = [MovieData]()
-    public var movie = [Movie]()
 
     @IBOutlet var table: UITableView!
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -69,6 +67,9 @@ class SecondViewController: UIViewController, UITableViewDelegate,UITableViewDat
         }
         cell.isLiked = true
         cell.likeButton.setImage(UIImage(named:"Like"), for: UIControl.State.normal)
+        cell.rating.text = String(format:"%.1f", movie.rating )
+        cell.year.text = self.GetOnlyDateMonthYearFromFullDate(currentDateFormate: "yyyy-MM-dd", conVertFormate: "YYYY", convertDate: movie.year!) as String
+
         cell.callback = { () -> Void in
             self.reloadData()
         }
@@ -77,24 +78,29 @@ class SecondViewController: UIViewController, UITableViewDelegate,UITableViewDat
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 240
     }
-    func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
-           URLSession.shared.dataTask(with: url) {
-               (data, response, error) in
-               completion(data, response, error)
-               }.resume()
-       }
-       
-       func downloadImage(url: URL, imageView: UIImageView) {
-           print("Download Started")
-           getDataFromUrl(url: url) { (data, response, error)  in
-               DispatchQueue.main.sync() { () -> Void in
-                   guard let data = data, error == nil else { return }
-                   print(response?.suggestedFilename ?? url.lastPathComponent)
-                   print("Download Finished")
-                   imageView.image = UIImage(data: data)
-               }
-           }
-       }
-
+   
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        NSLog("did select %d", indexPath.row)
+        
+        let vc = MovieDetailViewController()
+        performSegue(withIdentifier: "SecondSegue", sender: vc)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    override func prepare(for segue: UIStoryboardSegue,
+                sender: Any?)
+    {
+        let vc = segue.destination as! MovieDetailViewController
+        let movieIndex = (table.indexPathForSelectedRow?.row)!
+        
+        vc.movie = Movie()
+        let data = movieData[movieIndex]
+        vc.movie.id = Int(data.id)
+        vc.movie.releaseDate = data.year
+        vc.movie.title = data.title
+        vc.movie.posterURL = data.posterUrl
+        vc.movie.sinopsis = data.sinopsis
+        vc.movie.rating = data.rating
+        
+    }
 }
 

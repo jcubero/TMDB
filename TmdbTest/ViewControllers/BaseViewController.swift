@@ -21,12 +21,10 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        setupSideMenu()
-
     }
     func SaverForLater(movieId: Int) {
       let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MovieData")
-      request.predicate = NSPredicate(format: "id = %@", movieId)
+      request.predicate = NSPredicate(format: "id = %d", movieId)
       let context = appDelegate.persistentContainer.viewContext
       var isAdded = false
       request.returnsObjectsAsFaults = false
@@ -52,19 +50,7 @@ class BaseViewController: UIViewController {
             print("Failed")
         }
     }
-    
-    private func setupSideMenu() {
-        // Define the menus
-        let viewController : UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LeftMenuViewController") as UIViewController
-        
-        SideMenuManager.default.leftMenuNavigationController = viewController as? SideMenuNavigationController
-        SideMenuManager.default.rightMenuNavigationController = viewController as? SideMenuNavigationController
-        
-        // Enable gestures. The left and/or right menus must be set up above for these to work.
-        // Note that these continue to work on the Navigation Controller independent of the View Controller it displays!
-        SideMenuManager.default.addPanGestureToPresent(toView: navigationController!.navigationBar)
-        SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view)
-    }
+
     func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
         URLSession.shared.dataTask(with: url) {
             (data, response, error) in
@@ -84,6 +70,18 @@ class BaseViewController: UIViewController {
         }
     }
     
+    func GetOnlyDateMonthYearFromFullDate(currentDateFormate:String , conVertFormate:String , convertDate:String ) -> String
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = currentDateFormate as String
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let finalDate = formatter.date(from: convertDate as String)
+        formatter.dateFormat = conVertFormate as String
+        let dateString = formatter.string(from: finalDate!)
+
+        return dateString
+    }
 
     /*
     // MARK: - Navigation

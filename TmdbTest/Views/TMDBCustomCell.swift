@@ -11,6 +11,8 @@ import CoreData
 
 class TMDBCustomCell: UITableViewCell {
 
+    @IBOutlet weak var rating: UILabel!
+    @IBOutlet weak var year: UILabel!
     @IBOutlet weak var posterImage: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var title: UILabel!
